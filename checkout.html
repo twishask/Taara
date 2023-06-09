@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TAARA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Ensures optimal rendering on mobile devices. -->
+    <!-- Apay -->
+    <script type='text/javascript'>
+        window.onAmazonLoginReady = function () {
+            amazon.Login.setClientId("amzn1.application-oa2-client.a754385ba8814c6e97b9a91c88f5e55c");
+        };
+        window.onAmazonPaymentsReady = function () {
+            showButton();
+        };
+    </script>
+    <script async="async" src='https://static-na.payments-amazon.com/OffAmazonPayments/us/sandbox/js/Widgets.js'>
+    </script>
+    <!-- end apay -->
+
+</head>
+<body>
+<h1>TAARA Industries</h1>
+<h2>Checkout</h2>
+<form action="/checkout" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div>
+        <label for="shipping_address">Shipping Address</label>
+        <input type="text" name="shipping_address" id="shipping_address">
+    </div>
+    <div>
+        <label for="billing_address">Billing Address</label>
+        <input type="text" name="billing_address" id="billing_address">
+    </div>
+    <div>
+        <label for="payment_method">Payment Method</label>
+        <select name="payment_method" id="payment_method">
+            <option value="credit_card">Credit Card</option>
+            <option value="debit_card">Debit Card</option>
+            <option value="paypal">PayPal</option>
+            <option value="stripe">Stripe</option>
+            <option value="apay">Amazon Pay</option>
+        </select>
+    </div>
+    <div>
+        <input type="submit" value="Submit">
+    </div>
+</form>
+
+<!-- Stripe -->
+<script async
+        src="https://js.stripe.com/v3/buy-button.js">
+</script>
+
+<stripe-buy-button
+        buy-button-id="buy_btn_1NH20TJiUtvXx8dXagpmBbXk"
+        publishable-key="pk_test_51NH0LEJiUtvXx8dX7IPcGauzVyb0J9Dm7CgFi2ws4veMaIKG1k4V3RaplirJRbqimFcBxlU9s3j6gQ5FDMmtGBwr002hFSsAMO"
+>
+</stripe-buy-button>
+
+
+<!-- Paypal -->
+
+
+<!-- APay -->
+<div id="AmazonPayButton">
+</div>
+<script type="text/javascript">
+    function showButton() {
+        var authRequest;
+        OffAmazonPayments.Button("AmazonPayButton", "SELLER-ID", {
+            type: "TYPE",
+            color: "COLOR",
+            size: "SIZE",
+
+            authorization: function () {
+                loginOptions = {
+                    scope: "SCOPES",
+                    popup: "POPUP-PARAMETER"
+                };
+                authRequest = amazon.Login.authorize(loginOptions,
+                    "REDIRECT-URL");
+            },
+
+            onError: function (error) {
+                // your error handling code.
+                // alert("The following error occurred: "
+                //        + error.getErrorCode()
+                //        + ' - ' + error.getErrorMessage());
+            }
+        });
+    };
+</script>
+<script type="text/javascript">
+    document.getElementById('Logout').onclick = function () {
+        amazon.Login.logout();
+    };
+</script>
+
+
+</body>
+</html>
